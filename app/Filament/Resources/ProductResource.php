@@ -5,8 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
-use Dom\Text;
-use Filament\Forms;
+
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\MarkdownEditor;
@@ -18,6 +17,10 @@ use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
@@ -49,7 +52,7 @@ class ProductResource extends Resource
                             ->fileAttachmentsDirectory('product')
                             ->maxLength(65535)
                     ])->columns(2),
-                    Section::make('images')->schema([
+                    Section::make('image')->schema([
                         FileUpload::make('image')
                             ->image()
                             ->directory('products')
@@ -62,11 +65,11 @@ class ProductResource extends Resource
                 Group::make()->schema([
                     Section::make('Product Details')->schema([
                         TextInput::make('price')
-                        ->required()
-                        ->numeric()
-                        ->minValue(0)
-                        ->maxValue(999999.99)
-                        ->step(0.01),
+                            ->required()
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(999999.99)
+                            ->step(0.01),
                         TextInput::make('stock')
                             ->required()
                             ->integer()
@@ -75,10 +78,10 @@ class ProductResource extends Resource
 
                     ])->columns(1),
                     Section::make('Associates')->schema([
-                        Select::make('category')
+                        Select::make('category_id')
                             ->relationship('category', 'name')
                             ->required(),
-                        Select::make('brand')
+                        Select::make('brand_id')
                             ->relationship('brand', 'name')
                             ->required(),
                     ])->columns(1),
@@ -104,13 +107,33 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name')
+                    ->searchable(),
+                ImageColumn::make('image')
+                    ->getStateUsing(fn($record) => is_array($record->image) ? $record->image[0] : $record->image)
+                    ->circular(),
+                TextColumn::make('category.name'),
+                TextColumn::make('brand.name'),
+                TextColumn::make('price')
+                    ->sortable(),
+                TextColumn::make('stock')
+                    ->sortable(),
+                IconColumn::make('is_active')
+                    ->boolean(),
+
             ])
             ->filters([
                 //
+                SelectFilter::make('category')->relationship('category', 'name'),
+                SelectFilter::make('brand')->relationship('brand', 'name'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
