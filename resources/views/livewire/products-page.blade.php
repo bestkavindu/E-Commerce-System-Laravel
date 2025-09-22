@@ -117,7 +117,7 @@
                                 <div class="w-full px-3 mb-6 sm:w-1/2 md:w-1/3">
                                     <div class="border border-gray-300 dark:border-gray-700">
                                         <div class="relative bg-gray-200">
-                                            <a href="/products/product_one" class="">
+                                            <a href="/products/{{ $product->slug }}" class="">
                                                     <img src="{{ url('storage', $product->image[0]) }}" alt=""
                                                         class="object-cover w-full h-56 mx-auto ">
                                             </a>
@@ -130,7 +130,7 @@
                                             </div>
                                             <p class="text-lg ">
                                                 <span
-                                                    class="text-green-600 dark:text-green-600">{{ $product->price }}</span>
+                                                    class="text-green-600 dark:text-green-600">{{ Number::currency($product->price, 'LKR') }}</span>
                                             </p>
                                         </div>
                                         <div
