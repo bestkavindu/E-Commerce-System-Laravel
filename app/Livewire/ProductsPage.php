@@ -20,6 +20,8 @@ class ProductsPage extends Component
     public $selectedCategories = [];
     public $paginate = 9;
     public $search = '';
+    public $inStock;
+    public $onSale;
 
     public function boot(ProductService $productService)
     {
@@ -42,12 +44,24 @@ class ProductsPage extends Component
         $this->resetPage();
     }
 
+    public function updatedInStock()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedOnSale()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         $productsItems = $this->productService->getFilteredProducts(
             $this->selectedCategories,
             $this->search,
-            $this->paginate
+            $this->paginate,
+            $this->inStock,
+            $this->onSale
         );
 
         return view('livewire.products-page', [
