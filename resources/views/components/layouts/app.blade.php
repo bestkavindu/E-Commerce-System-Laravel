@@ -32,6 +32,7 @@
     </main>
     @livewire('partials.footer')
     @livewireScripts
+    @fluxScripts
 </body>
 
 </html>

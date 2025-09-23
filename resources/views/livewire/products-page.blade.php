@@ -5,45 +5,25 @@
                 <div class="flex flex-wrap mb-24 -mx-3">
                     <div class="w-full pr-2 lg:w-1/4 lg:block">
                         <div class="p-4 mb-5 bg-white border border-gray-200 dark:border-gray-900 dark:bg-gray-900">
-                            <h2 class="text-2xl font-bold dark:text-gray-400"> Categories</h2>
-                            <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
                             <input type="text" wire:model.live="search" placeholder="Search categories..."
                                 class="w-full px-3 py-2 mb-4 text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rose-600 focus:border-transparent dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">
 
                         </div>
                         <div class="p-4 mb-5 bg-white border border-gray-200 dark:bg-gray-900 dark:border-gray-900">
-                            <h2 class="text-2xl font-bold dark:text-gray-400">Brand</h2>
-                            <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
-                            <ul>
-                                @forelse ($categories as $category)
-                                    <li class="mb-4">
-                                        <label for="category_{{ $category->id }}" class="flex items-center dark:text-gray-300">
-                                            <input wire:model.live='selectedCategories' id="category_{{ $category->id }}" value="{{ $category->id }}" type="checkbox" class="w-4 h-4 mr-2">
-                                            <span class="text-lg dark:text-gray-400">{{ $category->name }}</span>
-                                        </label>
-                                    </li>
-                                @empty
-                                @endforelse
 
-                            </ul>
+                            <flux:checkbox.group wire:model.live="selectedCategories" class="py-2" size='lg'
+                                label="Categories">
+                                @foreach ($categories as $category)
+                                    <flux:checkbox label="{{ $category->name }}" value="{{ $category->id }}" />
+                                @endforeach
+                            </flux:checkbox.group>
+
                         </div>
                         <div class="p-4 mb-5 bg-white border border-gray-200 dark:bg-gray-900 dark:border-gray-900">
-                            <h2 class="text-2xl font-bold dark:text-gray-400">Product Status</h2>
-                            <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
-                            <ul>
-                                <li class="mb-4">
-                                    <label for="inStock" class="flex items-center dark:text-gray-300">
-                                        <input type="checkbox" wire:model.live='inStock' id="inStock" class="w-4 h-4 mr-2">
-                                        <span class="text-lg dark:text-gray-400">In Stock</span>
-                                    </label>
-                                </li>
-                                <li class="mb-4">
-                                    <label for="onSale" class="flex items-center dark:text-gray-300">
-                                        <input type="checkbox" wire:model.live='onSale' id="onSale" class="w-4 h-4 mr-2">
-                                        <span class="text-lg dark:text-gray-400">On Sale</span>
-                                    </label>
-                                </li>
-                            </ul>
+                            <flux:checkbox.group label="Product Status" class="py-2" size='lg'>
+                                <flux:checkbox wire:model.live="inStock" label="On Stock" id="inStock" />
+                                <flux:checkbox wire:model.live="onSale" label="On Sale" id="onSale" />
+                            </flux:checkbox.group>
                         </div>
 
                         <div class="p-4 mb-5 bg-white border border-gray-200 dark:bg-gray-900 dark:border-gray-900">
@@ -61,39 +41,29 @@
                         </div>
                     </div>
                     <div class="w-full px-3 lg:w-3/4">
-                        <div class="px-3 mb-4">
-                            <div
-                                class="items-center justify-between hidden px-3 py-2 bg-gray-100 md:flex dark:bg-gray-900 ">
-                                <div class="flex items-center justify-between">
-                                    <select name="" id=""
-                                        class="block w-40 text-base bg-gray-100 cursor-pointer dark:text-gray-400 dark:bg-gray-900">
-                                        <option value="">Sort by latest</option>
-                                        <option value="">Sort by Price</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
                         <div class="flex flex-wrap items-center ">
 
                             @forelse ($productsItems as $product)
-                                <div class="w-full px-3 mb-6 sm:w-1/2 md:w-1/3">
-                                    <div class="border border-gray-300 dark:border-gray-700">
-                                        <div class="relative bg-gray-200">
+                                <div class="w-full px-3 mb-6 sm:w-1/2 md:w-1/3 rounded-2xl">
+                                    <div class="border border-gray-300 dark:border-gray-700 rounded-2xl">
+                                        <div class="relative bg-gray-200 rounded-2xl">
                                             <a href="/products/{{ $product->slug }}" class="">
                                                 <img src="{{ url('storage', $product->image[0]) }}" alt=""
-                                                    class="object-cover w-full h-56 mx-auto ">
+                                                    class="object-cover w-full h-56 mx-auto rounded-t-2xl">
                                             </a>
                                         </div>
                                         <div class="p-3 ">
                                             <div class="flex items-center justify-between gap-2 mb-2">
-                                                <h3 class="text-xl font-medium dark:text-gray-400">
-                                                    {{ $product->name }}
-                                                </h3>
+
+                                                <flux:heading size='lg' class="font-medium py-1 rounded-full">
+                                                    {{ $product->name }}</flux:heading>
                                             </div>
-                                            <p class="text-lg ">
-                                                <span
-                                                    class="text-green-600 dark:text-green-600">{{ Number::currency($product->price, 'LKR') }}</span>
-                                            </p>
+                                            <flux:text>
+                                                {{ Number::currency($product->price, 'LKR') }}
+                                            </flux:text>
+                                            <flux:badge type="success" class="mt-2">
+                                                {{ $product->stock > 0 ? 'In Stock' : 'Out of Stock' }}
+                                            </flux:badge>
                                         </div>
                                         <div
                                             class="flex justify-center p-4 border-t border-gray-300 dark:border-gray-700">
