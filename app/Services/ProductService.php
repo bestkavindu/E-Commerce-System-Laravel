@@ -29,4 +29,10 @@ class ProductService
         // Implement search logic here
         return $this->productRepository->search($search, $paginate);
     }
+
+    public function getFilteredProducts($categories = [], $search = '', $paginate = 15)
+    {
+        return $this->productRepository->filterByCategories($categories, $search, $paginate);
+    }
+
 }

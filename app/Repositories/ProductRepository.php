@@ -36,4 +36,20 @@ class ProductRepository
             ->where('name', 'like', '%' . $search . '%')
             ->paginate($perPage);
     }
+
+    public function filterByCategories($categories = [], $search = '', $perPage = 15): LengthAwarePaginator
+    {
+        $query = $this->model->active();
+
+        if (!empty($search)) {
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+
+        if (!empty($categories)) {
+            $query->whereIn('category_id', $categories);
+
+        }
+
+        return $query->paginate($perPage);
+    }
 }

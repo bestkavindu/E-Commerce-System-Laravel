@@ -2,19 +2,23 @@
 
 namespace App\Livewire;
 
+use App\Models\Category;
 use App\Services\ProductService;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ProductsPage extends Component
 {
+    use WithPagination;
+
     #[Title('Products Page')]
+
     protected ProductService $productService;
 
-    public $products = [];
-
-    public $paginate = 3;
-
+    public $categories = [];
+    public $selectedCategories = [];
+    public $paginate = 9;
     public $search = '';
 
     public function boot(ProductService $productService)
@@ -25,28 +29,29 @@ class ProductsPage extends Component
     public function mount($search = '')
     {
         $this->search = $search;
+        $this->categories = Category::where('is_active', 1)->get();
     }
 
     public function updatingSearch()
     {
-        // $this->resetPage();
+        $this->resetPage();
     }
 
-    public function loadProducts()
+    public function updatedSelectedCategories()
     {
-        $this->products = $this->productService->getAllProducts($this->paginate);
-
+        $this->resetPage();
     }
 
     public function render()
     {
-        $productsItems = empty($this->search)
-                    ? $this->productService->getAllProducts($this->paginate)
-                    : $this->productService->searchProducts($this->search, $this->paginate);
+        $productsItems = $this->productService->getFilteredProducts(
+            $this->selectedCategories,
+            $this->search,
+            $this->paginate
+        );
 
         return view('livewire.products-page', [
-                    'productsItems' => $productsItems,
-                    'search' => $this->search,
-                ]);
+            'productsItems' => $productsItems,
+        ]);
     }
 }
