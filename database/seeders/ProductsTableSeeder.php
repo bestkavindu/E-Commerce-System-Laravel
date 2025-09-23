@@ -130,7 +130,7 @@ class ProductsTableSeeder extends Seeder
             6 =>
             array (
                 'id' => 7,
-                'category_id' => 6,
+                'category_id' => 4,
                 'brand_id' => 7,
                 'name' => 'DJI Air 3S',
                 'slug' => 'dji-air-3s',
@@ -184,7 +184,7 @@ class ProductsTableSeeder extends Seeder
             9 =>
             array (
                 'id' => 10,
-                'category_id' => 7,
+                'category_id' => 4,
                 'brand_id' => 8,
                 'name' => 'Canon EOS R7 Mark II',
                 'slug' => 'canon-eos-r7-mark-ii',
@@ -202,7 +202,7 @@ class ProductsTableSeeder extends Seeder
             10 =>
             array (
                 'id' => 11,
-                'category_id' => 8,
+                'category_id' => 4,
                 'brand_id' => 9,
                 'name' => 'Xbox Series X Pro',
                 'slug' => 'xbox-series-x-pro',
@@ -220,7 +220,7 @@ class ProductsTableSeeder extends Seeder
             11 =>
             array (
                 'id' => 12,
-                'category_id' => 9,
+                'category_id' => 3,
                 'brand_id' => 10,
                 'name' => 'Garmin Fenix 9 Pro',
                 'slug' => 'garmin-fenix-9-pro',
@@ -238,7 +238,7 @@ class ProductsTableSeeder extends Seeder
             12 =>
             array (
                 'id' => 13,
-                'category_id' => 10,
+                'category_id' => 3,
                 'brand_id' => 11,
                 'name' => 'Bose Smart Soundbar 1000',
                 'slug' => 'bose-smart-soundbar-1000',
