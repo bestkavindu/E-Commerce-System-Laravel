@@ -37,7 +37,7 @@ class ProductRepository
             ->paginate($perPage);
     }
 
-    public function filterByCategories($categories = [], $search = '', $perPage = 15, $inStock = false, $onSale = false): LengthAwarePaginator
+    public function filterByCategories($categories = [], $search = '', $perPage = 15, $inStock = false, $onSale = false, $priceRange = null): LengthAwarePaginator
     {
         $query = $this->model->active();
 
@@ -55,6 +55,9 @@ class ProductRepository
 
         if ($onSale) {
             $query->where('in_sale', 1);
+        }
+        if ($priceRange) {
+            $query->where('price', '<=', $priceRange);
         }
 
         return $query->paginate($perPage);

@@ -30,9 +30,9 @@ class ProductService
         return $this->productRepository->search($search, $paginate);
     }
 
-    public function getFilteredProducts($categories = [], $search = '', $paginate = 15, $inStock = false, $onSale = false)
+    public function getFilteredProducts($categories = [], $search = '', $paginate = 15, $inStock = false, $onSale = false, $priceRange = null)
     {
-        return $this->productRepository->filterByCategories($categories, $search, $paginate, $inStock, $onSale);
+        return $this->productRepository->filterByCategories($categories, $search, $paginate, $inStock, $onSale, $priceRange);
     }
 
 }

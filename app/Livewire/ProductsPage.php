@@ -22,6 +22,7 @@ class ProductsPage extends Component
     public $search = '';
     public $inStock;
     public $onSale;
+    public $priceRange = 100000;
 
     public function boot(ProductService $productService)
     {
@@ -61,7 +62,8 @@ class ProductsPage extends Component
             $this->search,
             $this->paginate,
             $this->inStock,
-            $this->onSale
+            $this->onSale,
+            $this->priceRange
         );
 
         return view('livewire.products-page', [
